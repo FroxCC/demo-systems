@@ -72,13 +72,11 @@ app.get('/auth/quickbooks', (req, res) => {
 });
 
 app.post('/create-invoice', async (req, res) => {
-    tokens = loadTokens();
-
-    if (!tokens.access_token || !tokens.realmId) {
-        return res.status(400).send('Access token or Company ID is missing');
-    }
-
     const { clientName, clientEmail, invoiceTotal, invoiceDetails } = req.body;
+
+    if (!Array.isArray(invoiceDetails)) {
+        return res.status(400).json({ error: 'invoiceDetails debe ser un array' });
+    }
 
     const lineItems = invoiceDetails.map(detail => ({
         "Description": detail.description,
@@ -108,7 +106,6 @@ app.post('/create-invoice', async (req, res) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         };
-
 
         const response = await axios.post(`https://quickbooks.api.intuit.com/v3/company/${tokens.realmId}/invoice`, invoiceData, { headers });
 
