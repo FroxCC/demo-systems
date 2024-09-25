@@ -5,7 +5,14 @@ const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
+app.use(express.json());
+
 const port = process.env.PORT || 3000;
+
+
+
+
+
 
 const tokensFile = 'tokens.json';
 
@@ -27,7 +34,7 @@ function loadTokens() {
 
 let tokens = loadTokens();
 
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 app.get('/callback', async (req, res) => {
     const authorizationCode = req.query.code;
@@ -72,8 +79,8 @@ app.get('/auth/quickbooks', (req, res) => {
 });
 
 app.post('/create-invoice', async (req, res) => {
-
     console.log('Datos recibidos:', req.body);
+
     const { clientName, clientEmail, invoiceTotal, invoiceDetails } = req.body;
 
     if (!Array.isArray(invoiceDetails)) {
