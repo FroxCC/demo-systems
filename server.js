@@ -72,6 +72,8 @@ app.get('/auth/quickbooks', (req, res) => {
 });
 
 app.post('/create-invoice', async (req, res) => {
+
+    console.log('Datos recibidos:', req.body);
     const { clientName, clientEmail, invoiceTotal, invoiceDetails } = req.body;
 
     if (!Array.isArray(invoiceDetails)) {
