@@ -66,6 +66,11 @@ app.get('/callback', async (req, res) => {
     }
 });
 
+app.get('/auth/quickbooks', (req, res) => {
+    const authorizationUrl = `https://appcenter.intuit.com/connect/oauth2?client_id=${process.env.CLIENT_ID}&scope=com.intuit.quickbooks.accounting&redirect_uri=${process.env.REDIRECT_URI}&response_type=code&state=12345`;
+    res.redirect(authorizationUrl);
+});
+
 app.post('/create-invoice', async (req, res) => {
     tokens = loadTokens();
 
